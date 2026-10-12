@@ -15,9 +15,16 @@
           <span>snzipps</span>
         </a>
         <a class="checkout-back" href="socks.html">← Înapoi la magazin</a>
+        <button class="audio-toggle" id="audio-toggle" type="button" aria-label="Redă muzica" title="Redă muzica" aria-pressed="false">
+          <svg class="audio-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z" /></svg>
+          <svg class="audio-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z" /></svg>
+          <span>Audio</span>
+        </button>
         <button class="theme-toggle" type="button" aria-label="Schimbă tema">Mod întunecat</button>
       </div>
     </header>
+
+    <audio id="site-audio" preload="metadata" autoplay loop><source src="aqua-sound.mp3" type="audio/mpeg" /></audio>
 
     <main class="checkout-layout">
       <section class="checkout-main" aria-labelledby="checkout-title">

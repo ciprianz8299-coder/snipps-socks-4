@@ -26,15 +26,23 @@
           <a href="socks.html">Magazin</a>
           <a href="subscriptions.html">Abonament</a>
           <a href="reviews.html" aria-current="page">Recenzii</a>
+          <a href="poze.html">Poze</a>
           <a href="faq.html">Întrebări frecvente</a>
         </nav>
 
         <div class="nav-actions">
           <button class="theme-toggle" type="button" aria-label="Schimbă tema">Mod întunecat</button>
+          <button class="audio-toggle" id="audio-toggle" type="button" aria-label="Redă muzica" title="Redă muzica" aria-pressed="false">
+            <svg class="audio-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z" /></svg>
+            <svg class="audio-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z" /></svg>
+            <span>Audio</span>
+          </button>
           <a href="index.html#reviews" class="button">Lasă o recenzie</a>
         </div>
       </div>
     </header>
+
+    <audio id="site-audio" preload="metadata" autoplay loop><source src="aqua-sound.mp3" type="audio/mpeg" /></audio>
 
     <main id="top">
       <section class="container testimonials-section" aria-labelledby="reviews-title">
@@ -43,9 +51,14 @@
             <span class="eyebrow small">snzipps · experiențe</span>
             <h1 id="reviews-title">Recenzii de la clienți</h1>
           </div>
-          <p class="review-page-note">Recenziile trimise pe acest site se salvează în browserul în care au fost scrise.</p>
+          <p class="review-page-note">Aici apar toate recenziile trimise din acest browser. Sincronizarea între dispozitive necesită conectarea unui serviciu online.</p>
         </div>
 
+        <div class="review-summary" aria-live="polite">
+          <strong class="review-average" id="review-average">—</strong>
+          <span class="stars" id="review-average-stars" aria-hidden="true">☆☆☆☆☆</span>
+          <span id="review-count">Nicio recenzie încă</span>
+        </div>
         <div class="testimonial-grid" id="review-list" aria-live="polite"></div>
         <p class="review-empty" id="review-empty" role="status" hidden>Nu există încă recenzii trimise din acest browser.</p>
         <a href="index.html#reviews" class="button review-page-action">Lasă o recenzie</a>

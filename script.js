@@ -19,6 +19,9 @@ const reviewForm = document.querySelector('#review-form');
 const reviewList = document.querySelector('#review-list');
 const reviewEmpty = document.querySelector('#review-empty');
 const reviewStatus = document.querySelector('#review-status');
+const reviewAverage = document.querySelector('#review-average');
+const reviewAverageStars = document.querySelector('#review-average-stars');
+const reviewCount = document.querySelector('#review-count');
 const selectedPlanLabel = document.querySelector('#selected-plan-label');
 const selectedPlanPrice = document.querySelector('#selected-plan-price');
 const addButtons = document.querySelectorAll('.add-button');
@@ -246,39 +249,27 @@ if (siteAudio && audioToggle) {
 
   window.addEventListener('pagehide', () => saveAudioSession(!siteAudio.paused));
 
-  document.addEventListener('click', (event) => {
-    const link = event.target.closest('a[href]');
-    if (!link || event.defaultPrevented) return;
-    const destination = new URL(link.href, window.location.href);
-    if (destination.pathname.endsWith('/checkout.html')) {
-      siteAudio.pause();
-      saveAudioSession(false);
-    }
-  });
-
   try {
     const savedAudioSession = JSON.parse(sessionStorage.getItem(audioSessionKey) || 'null');
-    if (savedAudioSession?.playing) {
-      const resumeAudio = async () => {
-        if (siteAudio.duration) {
-          const elapsed = Math.max(0, (Date.now() - savedAudioSession.savedAt) / 1000);
-          siteAudio.currentTime = (savedAudioSession.currentTime + elapsed) % siteAudio.duration;
-        }
-
-        try {
-          await siteAudio.play();
-          saveAudioSession(true);
-        } catch {
-          saveAudioSession(false);
-          updateAudioToggle();
-        }
-      };
-
-      if (siteAudio.readyState >= 1) {
-        resumeAudio();
-      } else {
-        siteAudio.addEventListener('loadedmetadata', resumeAudio, { once: true });
+    const startAudio = async () => {
+      if (savedAudioSession?.playing && siteAudio.duration) {
+        const elapsed = Math.max(0, (Date.now() - savedAudioSession.savedAt) / 1000);
+        siteAudio.currentTime = (savedAudioSession.currentTime + elapsed) % siteAudio.duration;
       }
+
+      try {
+        await siteAudio.play();
+        saveAudioSession(true);
+      } catch {
+        saveAudioSession(false);
+        updateAudioToggle();
+      }
+    };
+
+    if (savedAudioSession?.playing && siteAudio.readyState < 1) {
+      siteAudio.addEventListener('loadedmetadata', startAudio, { once: true });
+    } else {
+      startAudio();
     }
   } catch {
     sessionStorage.removeItem(audioSessionKey);
@@ -377,7 +368,22 @@ const renderReviews = () => {
   const reviews = readReviews();
   if (reviewEmpty) reviewEmpty.hidden = reviews.length > 0;
 
-  reviews.forEach((review) => {
+  if (reviewAverage && reviewAverageStars && reviewCount) {
+    const average = reviews.length
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+      : 0;
+    reviewAverage.textContent = reviews.length
+      ? new Intl.NumberFormat('ro-RO', { maximumFractionDigits: 1 }).format(average)
+      : '—';
+    reviewAverageStars.textContent = `${'★'.repeat(Math.round(average))}${'☆'.repeat(5 - Math.round(average))}`;
+    reviewCount.textContent = reviews.length === 1
+      ? '1 recenzie'
+      : `${reviews.length} recenzii`;
+  }
+
+  const limit = Number(reviewList.dataset.reviewLimit);
+  const visibleReviews = Number.isInteger(limit) && limit > 0 ? reviews.slice(0, limit) : reviews;
+  visibleReviews.forEach((review) => {
     const card = document.createElement('article');
     card.className = 'testimonial-card customer-review';
 
@@ -398,6 +404,9 @@ const renderReviews = () => {
 };
 
 renderReviews();
+window.addEventListener('storage', (event) => {
+  if (event.key === 'snzipps-reviews' || event.key === null) renderReviews();
+});
 
 reviewForm?.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -417,7 +426,7 @@ reviewForm?.addEventListener('submit', (event) => {
     localStorage.setItem('snzipps-reviews', JSON.stringify(reviews));
     renderReviews();
     reviewForm.reset();
-    reviewStatus.textContent = 'Recenzia a fost adăugată în acest browser.';
+    reviewStatus.textContent = 'Recenzia a fost adăugată și este vizibilă pe pagina Recenzii în acest browser.';
   } catch {
     reviewStatus.textContent = 'Recenzia nu a putut fi salvată în acest browser.';
   }

@@ -30,6 +30,7 @@
           <a href="socks.html">Magazin</a>
           <a href="subscriptions.html">Abonament</a>
           <a href="reviews.html">Recenzii</a>
+          <a href="poze.html">Poze</a>
           <a href="faq.html">Întrebări frecvente</a>
         </nav>
 
@@ -48,7 +49,7 @@
       </div>
     </header>
 
-    <audio id="site-audio" preload="metadata" loop><source src="ESCALERAS-renewed.mp3" type="audio/mpeg" /></audio>
+    <audio id="site-audio" preload="metadata" autoplay loop><source src="aqua-sound.mp3" type="audio/mpeg" /></audio>
 
     <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
       <div class="cart-panel">
@@ -306,7 +307,24 @@
         </div>
       </section>
 
-      <section class="container testimonials-section" id="reviews">
+      <section class="container testimonials-section" id="reviews" aria-labelledby="home-reviews-title">
+        <div class="review-overview">
+          <div class="section-header">
+            <div>
+              <span class="eyebrow small">Păreri fără filtru</span>
+              <h2 id="home-reviews-title">Povești de la clienții noștri</h2>
+            </div>
+            <a class="button secondary review-all-link" href="reviews.html">Toate recenziile</a>
+          </div>
+          <div class="review-summary" aria-live="polite">
+            <strong class="review-average" id="review-average">—</strong>
+            <span class="stars" id="review-average-stars" aria-hidden="true">☆☆☆☆☆</span>
+            <span id="review-count">Nicio recenzie încă</span>
+          </div>
+          <div class="testimonial-grid" id="review-list" data-review-limit="3" aria-live="polite"></div>
+          <p class="review-empty" id="review-empty" role="status" hidden>Fii primul care lasă o recenzie.</p>
+        </div>
+
         <form class="review-form" id="review-form">
           <div class="review-form-heading">
             <span class="eyebrow small">Părerea ta contează</span>
@@ -333,7 +351,7 @@
             </label>
           </div>
           <div class="review-form-footer">
-            <p class="review-note">Recenziile trimise aici se salvează doar în acest browser și nu sunt vizibile altor clienți.</p>
+            <p class="review-note">Recenziile se salvează în acest browser și apar pe pagina Recenzii. Pentru sincronizare între dispozitive este necesar un serviciu online.</p>
             <button class="button" type="submit">Publică recenzia</button>
           </div>
           <p class="review-status" id="review-status" role="status" hidden></p>
@@ -355,6 +373,7 @@
       <div class="container footer-inner">
         <span>© <span id="year"></span> snzipps</span>
         <span>Design pentru confort. Creat pentru durată.</span>
+        <a class="footer-video-link" href="https://www.youtube.com/watch?v=GMThmDxqTkU" target="_blank" rel="noopener noreferrer">YouTube</a>
       </div>
     </footer>
 
